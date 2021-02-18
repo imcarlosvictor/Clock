@@ -1,0 +1,127 @@
+-------------------------------------------------
+Time class
+
+	# METHODS
+	-----------
+	get_time_12hr():
+		- grab time from time module
+		- format time to 12hrs
+
+	get_time_24hr():
+		- grab time from time module
+		- format time to 24hrs
+
+-------------------------------------------------
+Clock class
+
+	# CLASS VARIABLES
+	-----------
+	alarms = []	
+
+
+	# METHODS
+	-----------
+	format_time():
+		If user passed 24hr
+			- change to 24hr
+		Else
+			- change to 12hr
+
+	time():
+		grab the present time
+
+	create_alarm():
+		- prompt user to enter a time (HH:MM:am/pm)
+		- create a name for the alarm
+		- add to list of alarms
+	
+	delete_alarm(alarm):
+		- delete alarm from list
+
+	edit_alarm(alarm):
+		- create_alarm()
+		- delete_alarm(alarm)
+
+	next_alarm():
+		- subtract time of current time from next alarm
+		- display on label
+
+
+-------------------------------------------------
+Timer class
+	
+	# CLASS VARIABLES
+	-----------
+	presets = []
+
+	# ATTRIBUTES
+	-----------
+	timer:
+		prompt user to change the time (inputs)
+
+	progress_bar:
+		- displays time left
+
+	# METHODS
+	-----------
+	counter():
+		- start_time():
+				- grabs time from arguement
+				- formats time
+				- returns string format of the time
+		- if active_preset is not ''
+			- start_time() w/ time == active_preset
+		- else:
+			- start_time() w/ time == 0
+
+	create_preset():
+		- Check if name == '':
+			- Raise error
+		- Check if hour,min,sec == 00
+			- Raise error
+
+		- change new_preset to a list
+		- create and add new preset to the dictionary
+
+	delete_preset(preset):
+		- delete preset from list
+
+	edit_preset(preset):
+		- create_preset()
+		- delete_preset(preset)
+	start():
+		- start timer
+		- update display
+
+	pause():
+		- pause time
+		- update display
+
+	resume():
+		If timer is paused:
+			- resume time
+			- update timer
+		Else:
+			- display an error
+
+	stop():
+		- reset timer
+		- update display to 0
+	
+
+-------------------------------------------------
+Stopwatch(Timer) class
+
+	# CLASS VARIABLES
+	-----------
+	timer:
+		- displays timer (MM:SS)
+	
+	laps:
+		- displays laps
+	
+	# METHODS
+	-----------
+	lap():
+		- record time on click (do not pause timer)
+		- display lap on space below timer (Lap : Lap Time : Overall Time)
