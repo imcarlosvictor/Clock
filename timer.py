@@ -7,7 +7,10 @@ class Timer:
 
     Attributes:
         presets: Holds all presets created by the user.
-        count: Current count for countdown
+        counter: Current count for countdown
+        running: State variable for the timer
+        active_preset: Holds all user presets.
+        progress_bar: Displays the remaning time left.
 
     Methods:
         counter():
@@ -31,14 +34,16 @@ class Timer:
             Stop and reset timer to the active_preset.
     """
 
-
     def __init__(self):
+        self.counter = 0  # Sets the counter number
+        self.running = False
+
         self.presets: Dict[str, List[int]] = {}
 
         # Allow user to add a timer w/o creating a preset
         self.active_preset = ''
 
-    def counter_label(self, counter, label) -> str:
+    def counter_label(self, counter, label):
         """Starts the countdown.
 
         Returns:
@@ -49,11 +54,10 @@ class Timer:
         def count():
             """Starts count."""
 
-            running = True
-            while running:
+            while self.running:
 
                 # Display time in the proper format
-                time = datetime.fromtimestamp(counter)
+                time = datetime.fromtimestamp(self.counter)
                 time_string = time.strftime('%H:%M:%S')
                 display_time = time_string
 
@@ -61,7 +65,7 @@ class Timer:
                 label['text'] = display_time
                 label.after(1000, count)
 
-                counter += 1
+                self.counter -= 1
 
         # Start count
         count()
@@ -81,12 +85,12 @@ class Timer:
             ValueError: If preset time is == 00:00:00
         """
 
-        # NameError
+        # NameError if name is empty
         if preset_name == '':
             raise NameError('Enter a title for the preset.')
 
-        # ValueError
-        if hour == '00' and minute == '00' and seconds == '00':
+        # ValueError if time is 00:00:00
+        if hour == 0 and minute == 0 and seconds == 0:
             raise ValueError('Preset cannot be 00:00:00.')
 
         # Convert args to str and pass convert to a list
@@ -123,29 +127,44 @@ class Timer:
         self.active_preset = preset_name
         # adjust time from label to the timer on the preset
 
-    def start(self):
+    def start(self, counter, label):
         """Start timer."""
 
         # Find out how to start a timer
-        pass
+        self.running = True
+        self.counter_label(counter, label)
+        lbl_start['state'] = 'disabled'
+        lbl_pause['state'] = 'enabled'
+        lbl_resume['state'] = 'disabled'
+        lbl_stop['state'] = 'enable'
 
     def pause(self):
         """Pause timer."""
 
+        self.running = False
+        lbl_start['state'] = 'disabled'
+        lbl_pause['state'] = 'enabled'
+        lbl_resume['state'] = 'disabled'
+        lbl_stop['state'] = 'enable'
 
-        pass
-
-    def resume(self):
+    def resume(self, counter, label):
         """Resume timer if paused."""
 
-
-        pass
+        self.running = True
+        self.counter_label(counter, label)
+        lbl_start['state'] = 'disabled'
+        lbl_pause['state'] = 'enabled'
+        lbl_resume['state'] = 'disabled'
+        lbl_stop['state'] = 'enable'
 
     def stop(self):
         """Stop the timer and reset."""
 
-
-        pass
+        self.running = False
+        lbl_start['state'] = 'disabled'
+        lbl_pause['state'] = 'enabled'
+        lbl_resume['state'] = 'disabled'
+        lbl_stop['state'] = 'enable'
 
     def ring(self):
         """Rings once time runs out.
