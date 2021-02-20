@@ -43,7 +43,7 @@ class Timer:
         # Allow user to add a timer w/o creating a preset
         self.active_preset = ''
 
-    def counter_label(self, counter, label):
+    def counter_label(self, label):
         """Starts the countdown.
 
         Returns:
@@ -65,11 +65,11 @@ class Timer:
                 label['text'] = display_time
                 label.after(1000, count)
 
+                # Updates instance counter
                 self.counter -= 1
 
         # Start count
         count()
-
 
     def create_preset(self, preset_name: str, hour: int, minute: int, seconds: int):
         """Allows user to create a preset.
@@ -124,7 +124,8 @@ class Timer:
         """Pick a preset for the counter."""
 
         # set active_preset
-        self.active_preset = preset_name
+        active = self.presets[preset_name]
+        self.active_preset = active
         # adjust time from label to the timer on the preset
 
     def start(self, counter, label):

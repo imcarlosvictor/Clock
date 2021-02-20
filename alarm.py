@@ -14,7 +14,6 @@ class Time:
             as a string
 
     """
-
     def get_time_12hr(self):
         """Gets the current time.
 
@@ -39,11 +38,7 @@ class Time:
 class Clock:
     """This is a clock.
 
-    Args:
-        hr_format: Pass either 12 or 24
-
     Attributes:
-        hr_format: Display either a 12hr or 24hr format.
         alarms: stores all alarms created by the user.
 
     Methods:
@@ -65,21 +60,12 @@ class Clock:
             If the current time matches with any alarm time in
             alarms dicitonary, give off an ring.
     """
-
-    alarms: Dict[str, str] = {}
-
-    def __init__(self, hr_format: str):
+    def __init__(self, hr_format: int):
         self.hr_format = hr_format
-
         self.get_time = Time()  # Create Time instance
+        self.alarms: Dict[str, str] = {}
 
-        # Set time format by invoking method form Time
-        if self.hr_format == 24:
-            self.clock_time = self.get_time.get_time_24hr()
-        else:
-            self.clock_time = self.get_time.get_time_12hr()
-
-    def format_time(self, alarm_clock, hr_format: str) -> str:
+    def format_time(self, hr_format: int) -> str:
         """Sets the time format to either the 12hr of 24hr format.
 
         Args:
@@ -92,23 +78,31 @@ class Clock:
 
         if hr_format == 12:
             new_format = self.get_time.get_time_12hr()
-            # update label
         else:
-            # time_format = time.strftime('%I:%M:%S')
+            self.hr_format = 24
             new_format = self.get_time.get_time_24hr()
-            # update label
 
         self.clock_time = new_format
         return self.clock_time
 
-    # def time_now(self) -> str:
-    #     """Grabs the current time from the instance variable."""
+    def time_now(self):
+        """Grabs the time."""
 
-    #     return self.cur_time
+        if self.hr_format == 12:
+            current_time = self.get_time.get_time_12hr()
+        else:
+            current_time = self.get_time.get_time_24hr()
 
-    def create_alarm(self):
+        return current_time
+
+    def create_alarm(self, name: str, hour: int, minutes: int):
         """Creates an alarm preset and adds it to the dict of
         existing alarms.
+
+        Args:
+            name: Name of the alarm.
+            hour: Hour for the alarm
+            minutes: Minute for the alarm
 
         Returns:
             Creates a new alarm with an alarm name and alarm time.
@@ -118,22 +112,21 @@ class Clock:
         """
 
         # Store values from the entry label
-        name_of_alarm: str = ''
-        hour: str = ''
-        minutes: str = ''
-        time_of_day: str = ''
-
-        new_alarm: str = hour + ':' + minutes + time_of_day
+        time_to_str = map(str, (hour, minutes))
+        time_to_list = list(time_to_str)
+        alarm_time = ':'.join(time_to_list)
 
         # Check if alarm already exists in a list
-        if name_of_alarm in self.alarms:
+        if name in self.alarms:
+            # Raise: NameError ?
             err_name = 'Alarm name already exists.'
             print(err_name)
-        elif new_alarm in self.alarms:
+        elif alarm_time in self.alarms:
+            # Raise: ValueError ?
             err_alarm_time = 'Alarm already exists.'
             print(err_alarm_time)
 
-        self.alarms[name_of_alarm] = new_alarm
+        self.alarms[name] = alarm_time
 
     def delete_alarm(self, alarm_name: str):
         """Deletes an existing alarm.
